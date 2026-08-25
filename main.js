@@ -134,8 +134,52 @@ function setupDynamicContent() {
 }
 
 /**
- * Setup Background Music Player with Fallback Procedural Romantic Chords
+ * Setup Background Music Player supporting YouTube IFrame Player & Procedural Romantic Fallbacks
  */
+let ytAudioPlayer = null;
+let ytAudioReady = false;
+
+window.onYouTubeIframeAPIReady = function() {
+  const videoId = (window.CONFIG && CONFIG.music && CONFIG.music.youtubeVideoId) ? CONFIG.music.youtubeVideoId : 'Oo5tqEWm-jM';
+  try {
+    ytAudioPlayer = new YT.Player('youtube-audio-player', {
+      height: '100',
+      width: '100',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1,
+        loop: 1,
+        playlist: videoId
+      },
+      events: {
+        onReady: (event) => {
+          ytAudioReady = true;
+          event.target.setVolume(85);
+        },
+        onStateChange: (event) => {
+          const audioBtn = document.getElementById('audio-controller');
+          const audioLabel = document.getElementById('audio-label');
+          if (event.data === YT.PlayerState.PLAYING) {
+            if (audioBtn) audioBtn.classList.add('audio-playing');
+            if (audioLabel) audioLabel.textContent = "Playing Our Song 🎵";
+          } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+            if (audioBtn) audioBtn.classList.remove('audio-playing');
+            if (audioLabel) audioLabel.textContent = "Play Our Song 🎵";
+          }
+        }
+      }
+    });
+  } catch (err) {
+    console.warn("YouTube API init warning:", err);
+  }
+};
+
 function setupAudioPlayer() {
   const audioBtn = document.getElementById('audio-controller');
   const audioLabel = document.getElementById('audio-label');
@@ -144,10 +188,10 @@ function setupAudioPlayer() {
   let audioContext = null;
   let synthInterval = null;
 
-  if (CONFIG.music && CONFIG.music.url) {
-    audio.src = CONFIG.music.url;
+  if (CONFIG.music && (CONFIG.music.fallbackUrl || CONFIG.music.url)) {
+    audio.src = CONFIG.music.fallbackUrl || CONFIG.music.url;
     audio.loop = true;
-    audio.volume = 0.5;
+    audio.volume = 0.6;
   }
 
   // Procedural Web Audio romantic chord progression (if external audio is blocked or offline)
@@ -208,31 +252,60 @@ function setupAudioPlayer() {
     }
   }
 
+  function playMusic() {
+    isPlaying = true;
+    if (audioBtn) audioBtn.classList.add('audio-playing');
+    if (audioLabel) audioLabel.textContent = "Playing Our Song 🎵";
+
+    // 1. Try YouTube Player first
+    if (ytAudioReady && ytAudioPlayer && typeof ytAudioPlayer.playVideo === 'function') {
+      try {
+        ytAudioPlayer.playVideo();
+        return;
+      } catch (e) {
+        console.warn("YouTube play exception:", e);
+      }
+    }
+
+    // 2. Try HTML5 Audio fallback
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // 3. Fallback to procedural synth
+        startRomanticSynth();
+      });
+    }
+  }
+
+  function pauseMusic() {
+    isPlaying = false;
+    if (audioBtn) audioBtn.classList.remove('audio-playing');
+    if (audioLabel) audioLabel.textContent = "Play Our Song 🎵";
+
+    if (ytAudioReady && ytAudioPlayer && typeof ytAudioPlayer.pauseVideo === 'function') {
+      try {
+        ytAudioPlayer.pauseVideo();
+      } catch (e) {}
+    }
+
+    audio.pause();
+    stopRomanticSynth();
+  }
+
   function toggleAudio() {
     if (isPlaying) {
-      audio.pause();
-      stopRomanticSynth();
-      isPlaying = false;
-      audioBtn.classList.remove('audio-playing');
-      audioLabel.textContent = "Play Our Song 🎵";
+      pauseMusic();
     } else {
-      isPlaying = true;
-      audioBtn.classList.add('audio-playing');
-      audioLabel.textContent = "Playing Romantic Melody ✨";
-
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // If external audio source fails or blocked, gracefully fallback to procedural romantic synth
-          startRomanticSynth();
-        });
-      }
+      playMusic();
     }
   }
 
   if (audioBtn) {
     audioBtn.addEventListener('click', toggleAudio);
   }
+
+  // Also expose global starter for "Open My Heart" button
+  window.playRomanticMusic = playMusic;
 }
 
 /**
@@ -413,6 +486,9 @@ function setupNavigation() {
   if (heroBtn && letterSection) {
     heroBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      if (typeof window.playRomanticMusic === 'function') {
+        window.playRomanticMusic();
+      }
       letterSection.scrollIntoView({ behavior: 'smooth' });
     });
   }

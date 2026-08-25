@@ -8,11 +8,12 @@ const CONFIG = {
   herName: "Sakshi",
   yourName: "Vaibhav", // Edit this to your name!
 
-  // Music Settings
+  // Music Settings (Configured with YouTube Song)
   music: {
-    // High quality romantic piano royalty-free track or custom audio file
-    url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3",
-    title: "Our Song (Romantic Melody)"
+    youtubeVideoId: "Oo5tqEWm-jM",
+    youtubeUrl: "https://youtu.be/Oo5tqEWm-jM",
+    title: "Our Song ❤️",
+    fallbackUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"
   },
 
   // Hero Section
