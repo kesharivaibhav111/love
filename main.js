@@ -184,17 +184,19 @@ function setupAudioPlayer() {
   const audioBtn = document.getElementById('audio-controller');
   const audioLabel = document.getElementById('audio-label');
   let isPlaying = false;
-  let audio = new Audio();
+  
+  // Primary HTML5 Audio object (plays assets/song.mp3 with zero lag)
+  const audio = new Audio();
+  const songSrc = (CONFIG.music && (CONFIG.music.songUrl || CONFIG.music.url)) || 'assets/song.mp3';
+  audio.src = songSrc;
+  audio.loop = true;
+  audio.volume = 0.75;
+  audio.preload = 'auto';
+
   let audioContext = null;
   let synthInterval = null;
 
-  if (CONFIG.music && (CONFIG.music.fallbackUrl || CONFIG.music.url)) {
-    audio.src = CONFIG.music.fallbackUrl || CONFIG.music.url;
-    audio.loop = true;
-    audio.volume = 0.6;
-  }
-
-  // Procedural Web Audio romantic chord progression (if external audio is blocked or offline)
+  // Procedural Web Audio romantic chord progression fallback
   function startRomanticSynth() {
     try {
       if (!audioContext) {
@@ -204,7 +206,6 @@ function setupAudioPlayer() {
         audioContext.resume();
       }
 
-      // Chord notes in Hz: Cmaj7, Am9, Fmaj7, Gsus4
       const chords = [
         [261.63, 329.63, 392.00, 493.88], // Cmaj7
         [220.00, 261.63, 329.63, 392.00], // Am7
@@ -241,7 +242,7 @@ function setupAudioPlayer() {
       playChord();
       synthInterval = setInterval(playChord, 3600);
     } catch (e) {
-      console.warn("Web Audio fallback not supported:", e);
+      console.warn("Web Audio fallback warning:", e);
     }
   }
 
@@ -255,23 +256,20 @@ function setupAudioPlayer() {
   function playMusic() {
     isPlaying = true;
     if (audioBtn) audioBtn.classList.add('audio-playing');
-    if (audioLabel) audioLabel.textContent = "Playing Our Song 🎵";
+    if (audioLabel) audioLabel.textContent = "Playing Ishq Bulaava ❤️";
 
-    // 1. Try YouTube Player first
-    if (ytAudioReady && ytAudioPlayer && typeof ytAudioPlayer.playVideo === 'function') {
-      try {
-        ytAudioPlayer.playVideo();
-        return;
-      } catch (e) {
-        console.warn("YouTube play exception:", e);
-      }
-    }
-
-    // 2. Try HTML5 Audio fallback
     const playPromise = audio.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // 3. Fallback to procedural synth
+      playPromise.catch((err) => {
+        console.warn("HTML5 audio playback error, trying YouTube or Synth:", err);
+        // If local audio fails, try YouTube
+        if (ytAudioReady && ytAudioPlayer && typeof ytAudioPlayer.playVideo === 'function') {
+          try {
+            ytAudioPlayer.playVideo();
+            return;
+          } catch (e) {}
+        }
+        // Otherwise fallback to procedural romantic chords
         startRomanticSynth();
       });
     }
@@ -282,13 +280,14 @@ function setupAudioPlayer() {
     if (audioBtn) audioBtn.classList.remove('audio-playing');
     if (audioLabel) audioLabel.textContent = "Play Our Song 🎵";
 
+    audio.pause();
+
     if (ytAudioReady && ytAudioPlayer && typeof ytAudioPlayer.pauseVideo === 'function') {
       try {
         ytAudioPlayer.pauseVideo();
       } catch (e) {}
     }
 
-    audio.pause();
     stopRomanticSynth();
   }
 
