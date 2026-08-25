@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For My Sakshi ❤️ — Always Yours</title>
+  
+  <!-- Meta description -->
+  <meta name="description" content="A personal, romantic 3D digital love letter created with love for Sakshi.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Cosmic Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Floating Romantic Music Player -->
+  <div class="audio-controller" id="audio-controller" title="Play / Pause Romantic Music">
+    <span class="audio-icon">🎵</span>
+    <span class="audio-label" id="audio-label">Play Our Song</span>
+    <div class="audio-bars">
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main>
+
+    <!-- ==========================================
+         1. HERO / OPENING SECTION
+         ========================================== -->
+    <section class="hero-section" id="hero-section">
+      <div class="container">
+        <div class="hero-badge" id="hero-badge">A Special Letter For You</div>
+        
+        <h1 class="hero-title" id="hero-title">For My Sakshi ❤️</h1>
+        <p class="hero-subtitle" id="hero-subtitle">There is something I really want to tell you…</p>
+
+        <!-- 3D Glowing Floating Heart Canvas -->
+        <div class="hero-3d-wrapper">
+          <canvas id="hero-canvas"></canvas>
+        </div>
+
+        <a href="#letter-section" class="btn-primary-glow" id="hero-btn">
+          <span>Open My Heart ❤️</span>
+        </a>
+      </div>
+
+      <div class="scroll-indicator">
+        <span>Scroll to read</span>
+        <span>↓</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         2. MAIN SORRY SECTION
+         ========================================== -->
+    <section class="letter-section" id="letter-section">
+      <div class="container">
+        <div class="letter-card">
+          <div class="card-seal">💌</div>
+          
+          <h2 class="letter-heading" id="letter-heading">
+            <span class="gradient">Sakshi, I'm Sorry ❤️</span>
+          </h2>
+
+          <div class="letter-body" id="letter-body">
+            <!-- Dynamic letter paragraphs loaded from config.js -->
+            <p class="letter-para">Sakshi,</p>
+            <p class="letter-para">I know sometimes my words or actions may hurt you, even when I never mean to. And I know that simply saying “sorry” cannot magically make everything okay.</p>
+            <p class="letter-para">But today, I genuinely want you to know that I am sorry.</p>
+            <p class="letter-para">I'm sorry for every moment when I made you feel upset, ignored, misunderstood, or less important than you actually are to me.</p>
+            <p class="letter-para">You mean so much more to me than I sometimes manage to express.</p>
+            <p class="letter-para">I don't want my ego, my mistakes, or a silly misunderstanding to ever become bigger than what we have.</p>
+            <p class="letter-para">I can't promise that I'll never make mistakes again, because I'm human. But I can promise that I'll keep learning, keep improving, and keep trying to become someone who makes you feel loved, respected, safe and special.</p>
+            <p class="letter-para highlight-quote">I don't want to win an argument if it means losing your smile.</p>
+            <p class="letter-para">So, from the bottom of my heart…</p>
+            <p class="letter-para"><strong>I'm really, really sorry, Sakshi. ❤️</strong></p>
+            <p class="letter-para"><strong>And if I could choose again, I'd still choose you. Every single time.</strong></p>
+            <div class="letter-signature">Forever yours ❤️</div>
+          </div>
+
+          <!-- Interactive Forgiveness Moment -->
+          <div class="forgiveness-wrapper">
+            <button class="btn-forgive" id="btn-forgive">
+              Can You Forgive Me? 🥺❤️
+            </button>
+            
+            <div class="forgiveness-success" id="forgiveness-success">
+              <h3 id="forgive-title">Thank You, Sakshi ❤️</h3>
+              <p id="forgive-subtitle">
+                I promise I'll try to make more memories that make you smile than moments that make you cry.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         3. MEMORY / LOVE SECTION
+         ========================================== -->
+    <section class="memories-section" id="memories-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Little Things I Love About You</h2>
+          <p class="section-subtitle">Every tiny detail that makes you the most special person to me</p>
+        </div>
+
+        <div class="memories-grid" id="memories-grid">
+          <!-- Dynamically populated from config.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         4. OUR LITTLE UNIVERSE (3D ORBIT SCENE)
+         ========================================== -->
+    <section class="universe-section" id="universe-section">
+      <div class="container">
+        <div class="universe-card">
+          <div class="section-header">
+            <h2 class="section-title">Our Little Universe</h2>
+            <p class="section-subtitle">Two souls gravitating around each other in infinite space</p>
+          </div>
+
+          <div class="universe-labels">
+            <span class="universe-tag tag-sakshi" id="tag-sakshi">Sakshi ❤️</span>
+            <span class="universe-tag tag-me" id="tag-me">Me ❤️</span>
+          </div>
+
+          <!-- 3D Dual Heart Orbit Canvas -->
+          <div class="universe-3d-wrapper">
+            <canvas id="universe-canvas"></canvas>
+          </div>
+
+          <p class="universe-quote" id="universe-quote">
+            “Maybe we're not perfect, but what we have is worth choosing again and again.”
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         5. FINAL CINEMATIC ENDING SECTION
+         ========================================== -->
+    <section class="final-section" id="final-section">
+      <div class="container">
+        <div class="final-card">
+          <p class="final-line-1" id="final-line-1">Sakshi, you are one of the most beautiful parts of my life. ❤️</p>
+          <p class="final-line-2" id="final-line-2">I'm sorry.</p>
+          <p class="final-line-3" id="final-line-3">I love you. ❤️</p>
+          <div class="final-signature" id="final-signature">Always yours — Vaibhav</div>
+
+          <div class="replay-wrap">
+            <button class="btn-secondary-glow" id="replay-btn">
+              <span>Back to Top ✨</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Crafted with endless love & devotion for Sakshi ❤️</p>
+  </footer>
+
+  <!-- External Libraries: Three.js, GSAP, Canvas Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Project Scripts -->
+  <script src="config.js"></script>
+  <script src="threeScene.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>
